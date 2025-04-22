@@ -1,0 +1,101 @@
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+input,
+button {
+  padding: 10px;
+  font-size: 16px;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+.navbar {
+  background-color: #2d3748;
+  color: white;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar a,
+.navbar button {
+  margin: 0 1rem;
+  text-decoration: none;
+  color: white;
+  font-size: 1.1rem;
+  transition: background-color 0.3s ease;
+}
+
+.navbar a:hover,
+.navbar button:hover {
+  color: #48bb78;
+}
+
+.navbar button {
+  background-color: #e53e3e;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.navbar button:hover {
+  background-color: #f56565;
+}
+
+.navbar .auth-links a {
+  background-color: #3182ce;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+}
+
+.navbar .auth-links a:hover {
+  background-color: #4299e1;
+}
+
+.navbar .register-link a {
+  background-color: #48bb78;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+}
+
+.navbar .register-link a:hover {
+  background-color: #68d391;
+}
