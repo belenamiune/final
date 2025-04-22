@@ -43,7 +43,6 @@ export default function CartPage() {
     }
   };
 
-  // Función para finalizar la compra
   const handlePurchase = async () => {
     try {
       const res = await api.post(

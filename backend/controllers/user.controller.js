@@ -1,5 +1,5 @@
 import User from "../models/user.model.js";
-import Cart from "../models/cart.model.js"; // 👈 Asegurate de importar el modelo de carrito
+import Cart from "../models/cart.model.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
@@ -19,7 +19,6 @@ export const registerUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const userRole = role || "user";
 
-    // 👉 Crear el carrito automáticamente
     const newCart = await Cart.create({ products: [] });
 
     const newUser = new User({
@@ -28,7 +27,7 @@ export const registerUser = async (req, res) => {
       first_name,
       last_name,
       role: userRole,
-      cartId: newCart._id, // 👈 Asociar el carrito al usuario
+      cartId: newCart._id,
     });
 
     await newUser.save();

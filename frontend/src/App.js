@@ -45,14 +45,7 @@ function App() {
               }
             />
 
-            <Route
-              path="/"
-              element={
-                <AdminRoute>
-                  <Books />
-                </AdminRoute>
-              }
-            />
+            <Route path="/" element={<Books />} />
           </Routes>
         </div>
       </Router>
