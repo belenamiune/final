@@ -19,24 +19,26 @@ export const registerUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const userRole = role || "user";
 
-    const newCart = await Cart.create({ products: [] });
-
     const newUser = new User({
       email,
       password: hashedPassword,
       first_name,
       last_name,
       role: userRole,
-      cartId: newCart._id,
     });
 
+    await newUser.save();
+
+    const newCart = await Cart.create({ user: newUser._id, products: [] });
+
+    newUser.cartId = newCart._id;
     await newUser.save();
 
     await sendEmail(
       newUser.email,
       "¡Bienvenido a Bookstore! 📚",
       `<h2>Hola ${newUser.first_name}!</h2>
-         <p>Gracias por registrarte en nuestra tienda de libros. ¡Esperamos que encuentres historias increíbles!</p>`
+           <p>Gracias por registrarte en nuestra tienda de libros. ¡Esperamos que encuentres historias increíbles!</p>`
     );
 
     res.status(201).json({
