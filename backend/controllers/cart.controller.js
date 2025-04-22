@@ -167,6 +167,11 @@ export const purchaseCart = async (req, res, next) => {
       purchase_datetime: new Date(),
       amount: totalAmount,
       purchaser: req.user.email,
+      userId: req.user.id,
+      products: cart.products.map((item) => ({
+        productId: item.book._id,
+        quantity: item.quantity,
+      })),
     });
 
     await ticket.save();

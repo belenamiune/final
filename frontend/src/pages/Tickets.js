@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import api from "../services/api";
+import "./Tickets.css";
 
 const TicketsPage = () => {
   const [tickets, setTickets] = useState([]);
@@ -22,23 +23,23 @@ const TicketsPage = () => {
   }, []);
 
   if (error) {
-    return <div>{error}</div>;
+    return <div className="message error">{error}</div>;
   }
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="message loading">Cargando...</div>;
   }
 
   return (
     <div className="tickets-page">
-      <h2>Mis Tickets</h2>
+      <h2 className="page-title">Mis Tickets</h2>
       {tickets.length === 0 ? (
-        <p>No tienes tickets.</p>
+        <p className="no-tickets">No tienes tickets.</p>
       ) : (
-        <div>
+        <div className="ticket-list">
           {tickets.map((ticket) => (
-            <div key={ticket._id} className="ticket">
-              <h3>Ticket {ticket.code}</h3>
+            <div key={ticket._id} className="ticket-card">
+              <h3 className="ticket-code">Ticket {ticket.code}</h3>
               <p>
                 <strong>Fecha de compra:</strong>{" "}
                 {new Date(ticket.purchase_datetime).toLocaleString()}
@@ -50,14 +51,12 @@ const TicketsPage = () => {
                 <strong>Comprador:</strong> {ticket.purchaser}
               </p>
 
-              <h4>Productos Comprados:</h4>
-              <ul>
+              <h4 className="products-title">Productos Comprados:</h4>
+              <ul className="product-list">
                 {ticket.products.map((item, index) => (
-                  <li key={index}>
-                    <p>
-                      <strong>{item.productId.title}</strong> — {item.quantity}{" "}
-                      unidades
-                    </p>
+                  <li key={index} className="product-item">
+                    <strong>{item.productId.title}</strong> — {item.quantity}{" "}
+                    unidades
                   </li>
                 ))}
               </ul>

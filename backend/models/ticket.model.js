@@ -5,6 +5,17 @@ const ticketSchema = new mongoose.Schema({
   purchase_datetime: { type: Date, default: Date.now },
   amount: Number,
   purchaser: String,
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  products: [
+    {
+      productId: { type: mongoose.Schema.Types.ObjectId, ref: "Book" },
+      quantity: Number,
+    },
+  ],
 });
 
 export default mongoose.model("Ticket", ticketSchema);

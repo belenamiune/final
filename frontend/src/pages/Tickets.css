@@ -1,0 +1,73 @@
+.tickets-page {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+}
+
+.page-title {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #333;
+}
+
+.no-tickets {
+  text-align: center;
+  color: #777;
+  font-style: italic;
+}
+
+.ticket-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.ticket-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1.25rem;
+  background-color: #f9f9f9;
+  transition: box-shadow 0.2s ease;
+}
+
+.ticket-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ticket-code {
+  font-size: 1.25rem;
+  color: #2c3e50;
+  margin-bottom: 0.75rem;
+}
+
+.products-title {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  color: #444;
+}
+
+.product-list {
+  list-style: none;
+  padding-left: 1rem;
+  margin-top: 0.5rem;
+}
+
+.product-item {
+  margin-bottom: 0.25rem;
+}
+
+.message {
+  text-align: center;
+  padding: 1rem;
+  font-size: 1.1rem;
+}
+
+.message.loading {
+  color: #555;
+}
+
+.message.error {
+  color: red;
+}
