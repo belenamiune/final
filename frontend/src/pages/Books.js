@@ -3,6 +3,7 @@ import api from "../services/api";
 
 export default function Books() {
   const [books, setBooks] = useState([]);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     fetchBooks();
@@ -14,6 +15,16 @@ export default function Books() {
       setBooks(res.data);
     } catch (err) {
       console.error("Error cargando libros", err);
+    }
+  };
+
+  const handleAddToCart = async (bookId) => {
+    const cartId = localStorage.getItem("cartId");
+    try {
+      await api.post("/carts/add", { bookId, cartId });
+      setMessage("✅ Producto agregado al carrito");
+    } catch (err) {
+      setMessage("❌ Error al agregar al carrito");
     }
   };
 
@@ -53,6 +64,18 @@ export default function Books() {
               <p>
                 <strong>Stock:</strong> 📦 {book.stock}
               </p>
+              <button
+                onClick={() => handleAddToCart(book._id)}
+                style={{
+                  backgroundColor: "green",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "5px",
+                  padding: "0.3rem 0.8rem",
+                }}
+              >
+                🛒 Agregar al carrito
+              </button>
             </div>
           ))}
         </div>

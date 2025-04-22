@@ -132,7 +132,7 @@ export default function AdminPanel() {
             borderRadius: "5px",
           }}
         >
-          Crear libro
+          Agregar libro
         </button>
       </form>
 
@@ -186,7 +186,7 @@ export default function AdminPanel() {
                   <button
                     onClick={() => handleAddToCart(book._id)}
                     style={{
-                      backgroundColor: "#FFA500",
+                      backgroundColor: "green",
                       color: "white",
                       border: "none",
                       borderRadius: "5px",
