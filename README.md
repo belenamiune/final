@@ -15,7 +15,7 @@ Este archivo contiene los casos de prueba de la API que hemos implementado, incl
    - `password`: mypassword123
    - `first_name`: John
    - `last_name`: Doe
-   - `role`: user (opcional, por defecto "user")
+   - `role`: user o admin (opcional, por defecto "user")
 
 **Resultado Esperado:**
 
@@ -169,6 +169,29 @@ Este archivo contiene los casos de prueba de la API que hemos implementado, incl
 - El producto se elimina correctamente del carrito.
 - Se retorna el mensaje `Producto eliminado del carrito`.
 - El código de estado es `200`.
+
+## 11. Agregar un Libro
+
+**Endpoint:** `POST /book/add`
+
+**Descripción:** Agregar un nuevo libro a la tienda.
+
+**Prueba:**
+
+1. Realizar una solicitud `POST` al endpoint `/book/add` con los siguientes datos:
+   - `title`: "The Great Gatsby"
+   - `author`: "F. Scott Fitzgerald"
+   - `price`: 19.99
+   - `stock`: 10
+   - `description`: "A classic novel of the Jazz Age."
+
+**Resultado Esperado:**
+
+- El libro se agrega correctamente a la base de datos.
+- Se retorna el mensaje `Libro agregado con éxito`.
+- El código de estado es `201`.
+
+---
 
 ## Conclusión
 
