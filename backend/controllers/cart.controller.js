@@ -45,7 +45,7 @@ export const getCartByUser = async (req, res, next) => {
 export const addBookToCart = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const { bookId, stock } = req.body;
+    const { bookId, quantity } = req.body;
 
     const book = await Book.findById(bookId);
     if (!book) {
@@ -66,12 +66,14 @@ export const addBookToCart = async (req, res, next) => {
     );
 
     if (productIndex >= 0) {
-      cart.products[productIndex].stock += stock;
+      cart.products[productIndex].quantity += quantity;
     } else {
-      cart.products.push({ book: bookId, stock });
+      cart.products.push({ book: bookId, quantity });
     }
 
     await cart.save();
+    await cart.populate("products.book");
+
     res.json({
       status: "success",
       message: "Producto agregado al carrito",
@@ -96,6 +98,7 @@ export const removeBookFromCart = async (req, res, next) => {
 
     cart.products = cart.products.filter((p) => p.book.toString() !== bookId);
     await cart.save();
+    await cart.populate("products.book");
 
     res.json({
       status: "success",
@@ -118,30 +121,45 @@ export const purchaseCart = async (req, res, next) => {
         .json({ status: "error", message: "Carrito vacío o no encontrado" });
     }
 
-    const totalAmount = cart.products.reduce((acc, item) => {
-      const price = item.book.price;
-      const stock = item.stock;
+    let totalAmount = 0;
 
-      // Verificar si el precio y la cantidad son números válidos
-      if (isNaN(price) || price <= 0) {
-        console.log("Precio inválido para el libro", item.book._id);
-        return acc; // No sumar este libro
+    for (const item of cart.products) {
+      const book = item.book;
+      const quantity = item.quantity;
+
+      if (
+        !book ||
+        typeof book.price !== "number" ||
+        isNaN(book.price) ||
+        book.price <= 0
+      ) {
+        return res.status(400).json({
+          status: "error",
+          message: `Precio inválido para el libro con ID ${book?._id}`,
+        });
       }
 
-      if (isNaN(stock) || stock <= 0) {
-        console.log("Cantidad inválida para el libro", item.book._id);
-        return acc; // No sumar este libro
+      if (isNaN(quantity) || quantity <= 0) {
+        return res.status(400).json({
+          status: "error",
+          message: `Cantidad inválida para el libro con ID ${book._id}`,
+        });
       }
 
-      return acc + price * stock;
-    }, 0);
+      if (quantity > book.stock) {
+        return res.status(400).json({
+          status: "error",
+          message: `No hay suficiente stock para el libro "${book.title}". Stock disponible: ${book.stock}, solicitado: ${quantity}`,
+        });
+      }
 
-    // Validar que el totalAmount sea un número válido y mayor que 0
-    if (isNaN(totalAmount) || totalAmount <= 0) {
-      return res.status(400).json({
-        status: "error",
-        message: "El monto de la compra es inválido",
-      });
+      totalAmount += book.price * quantity;
+    }
+
+    for (const item of cart.products) {
+      const book = item.book;
+      book.stock -= item.quantity;
+      await book.save();
     }
 
     const ticket = new Ticket({
@@ -153,13 +171,14 @@ export const purchaseCart = async (req, res, next) => {
 
     await ticket.save();
 
-    // Vaciar el carrito después de la compra
     cart.products = [];
     await cart.save();
 
-    res
-      .status(201)
-      .json({ status: "success", message: "Compra realizada", ticket });
+    res.status(201).json({
+      status: "success",
+      message: "Compra realizada exitosamente",
+      ticket,
+    });
   } catch (error) {
     next(error);
   }

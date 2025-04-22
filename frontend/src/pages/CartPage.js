@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import api from "../services/api";
+import { useNavigate } from "react-router-dom";
 
 export default function CartPage() {
   const [cart, setCart] = useState(null);
   const [message, setMessage] = useState("");
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchCart = async () => {
       const userId = localStorage.getItem("userId");
@@ -28,23 +29,6 @@ export default function CartPage() {
 
     fetchCart();
   }, []);
-
-  const handleAddBookToCart = async (bookId, stock) => {
-    try {
-      const res = await api.post(
-        "/carts/add",
-        { bookId, stock },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      setCart(res.data.cart);
-    } catch (err) {
-      setMessage("❌ Error al agregar el libro al carrito.");
-    }
-  };
 
   const handleRemoveBookFromCart = async (bookId) => {
     try {
@@ -73,6 +57,7 @@ export default function CartPage() {
       );
       setMessage("¡Compra exitosa!");
       setCart(null);
+      navigate("/");
     } catch (err) {
       setMessage("❌ Error al finalizar la compra.");
     }
@@ -90,31 +75,33 @@ export default function CartPage() {
       {cart.products.length === 0 ? (
         <p>Tu carrito está vacío.</p>
       ) : (
-        <ul style={{ listStyle: "none", padding: 0 }}>
-          {cart.products.map(({ book, stock }) => (
-            <li
-              key={book._id}
-              style={{
-                marginBottom: "1rem",
-                borderBottom: "1px solid #ddd",
-                paddingBottom: "1rem",
-              }}
-            >
-              <strong>{book.title}</strong> — {book.author} | 💲{book.price}{" "}
-              {stock}
-              <button
-                onClick={() => handleRemoveBookFromCart(book._id)}
-                style={{ marginLeft: "1rem", color: "white" }}
+        <>
+          <ul style={{ listStyle: "none", padding: 0 }}>
+            {cart.products.map(({ book, quantity }) => (
+              <li
+                key={book._id}
+                style={{
+                  marginBottom: "1rem",
+                  borderBottom: "1px solid #ddd",
+                  paddingBottom: "1rem",
+                }}
               >
-                Eliminar
-              </button>
-            </li>
-          ))}
-        </ul>
+                <strong>{book.title}</strong> — {book.author} | 💲{book.price} ×{" "}
+                {quantity}
+                <button
+                  onClick={() => handleRemoveBookFromCart(book._id)}
+                  style={{ marginLeft: "1rem", color: "white" }}
+                >
+                  Eliminar
+                </button>
+              </li>
+            ))}
+          </ul>
+          <button onClick={handlePurchase} style={{ marginTop: "1rem" }}>
+            Finalizar compra
+          </button>
+        </>
       )}
-      <button onClick={handlePurchase} style={{ marginTop: "1rem" }}>
-        Finalizar compra
-      </button>
     </div>
   );
 }
