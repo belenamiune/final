@@ -17,7 +17,7 @@ export default function CartPage() {
 
       try {
         const res = await api.get("/carts/");
-        if (res.data && res.data.cart && res.data.cart.products) {
+        if (res.data && res.data.cart) {
           setCart(res.data.cart);
         } else {
           setMessage("❌ El carrito no contiene productos.");
@@ -55,18 +55,20 @@ export default function CartPage() {
           },
         }
       );
-      setMessage("¡Compra exitosa!");
+
+      setMessage("✅ ¡Compra exitosa! Redirigiendo a tus tickets...");
       setCart(null);
-      navigate("/");
+
+      setTimeout(() => {
+        navigate("/tickets");
+      }, 1500);
     } catch (err) {
       setMessage("❌ Error al finalizar la compra.");
     }
   };
 
   if (!cart) {
-    return (
-      <div style={{ padding: "2rem" }}>{message || "Cargando carrito..."}</div>
-    );
+    return <div>Cargando carrito o carrito vacío...</div>;
   }
 
   return (
