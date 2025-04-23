@@ -19,7 +19,6 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
-            {/* Rutas privadas */}
             <Route
               path="/cart"
               element={
