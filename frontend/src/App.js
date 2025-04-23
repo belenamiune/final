@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
-import CartPage from "./pages/CartPage";
+import Cart from "./pages/Cart";
 import AdminPanel from "./pages/AdminPanel";
 import { PrivateRoute, AdminRoute } from "./components/PrivateRoute";
 import Login from "./auth/Login";
@@ -31,7 +31,7 @@ function App() {
               path="/cart"
               element={
                 <PrivateRoute>
-                  <CartPage />
+                  <Cart />
                 </PrivateRoute>
               }
             />

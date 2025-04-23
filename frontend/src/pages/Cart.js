@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import api from "../services/api";
 import { useNavigate } from "react-router-dom";
 
-export default function CartPage() {
+export default function Cart() {
   const [cart, setCart] = useState(null);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -67,14 +67,14 @@ export default function CartPage() {
   };
 
   if (!cart) {
-    return <div>Cargando carrito o carrito vacío...</div>;
+    return <div class="container">Cargando carrito o carrito vacío...</div>;
   }
 
   return (
-    <div style={{ maxWidth: "800px", margin: "2rem auto" }}>
-      <h2>🛒 Carrito de compras</h2>
+    <div className="container">
+      <h1 style={{ textAlign: "center" }}>🛒 Carrito de compras</h1>
       {cart.products.length === 0 ? (
-        <p>Tu carrito está vacío.</p>
+        <p style={{ textAlign: "center" }}>Tu carrito está vacío.</p>
       ) : (
         <>
           <ul style={{ listStyle: "none", padding: 0 }}>

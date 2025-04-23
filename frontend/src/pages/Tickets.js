@@ -39,7 +39,7 @@ const TicketsPage = () => {
         <div className="ticket-list">
           {tickets.map((ticket) => (
             <div key={ticket._id} className="ticket-card">
-              <h3 className="ticket-code">Ticket {ticket.code}</h3>
+              <h4 className="ticket-code">Ticket: {ticket.code}</h4>
               <p>
                 <strong>Fecha de compra:</strong>{" "}
                 {new Date(ticket.purchase_datetime).toLocaleString()}

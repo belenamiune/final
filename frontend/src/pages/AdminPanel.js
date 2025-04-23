@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../services/api";
+import "./AdminPanel.css";
 
 export default function AdminPanel() {
   const [form, setForm] = useState({
@@ -81,14 +82,15 @@ export default function AdminPanel() {
   return (
     <div
       style={{
-        maxWidth: "700px",
+        maxWidth: "800px",
         margin: "2rem auto",
         padding: "2rem",
         border: "1px solid #ccc",
         borderRadius: "10px",
+        backgroundColor: "white",
       }}
     >
-      <h2 style={{ textAlign: "center" }}>Panel de administrador</h2>
+      <h1 style={{ textAlign: "center" }}>Panel de administrador</h1>
 
       <form
         onSubmit={handleCreateBook}
@@ -143,7 +145,7 @@ export default function AdminPanel() {
           Agregar libro
         </button>
       </form>
-
+      <hr />
       {editingBook && (
         <form
           onSubmit={handleUpdateSubmit}
@@ -217,62 +219,36 @@ export default function AdminPanel() {
         </form>
       )}
 
-      <div>
+      <div className="books-container">
         <h3>Lista de libros</h3>
         {books.length === 0 ? (
           <p>No hay libros cargados.</p>
         ) : (
-          <ul style={{ listStyle: "none", padding: 0 }}>
+          <ul className="books-list">
             {books.map((book) => (
-              <li
-                key={book._id}
-                style={{
-                  padding: "1rem",
-                  borderBottom: "1px solid #ddd",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  gap: "1rem",
-                }}
-              >
-                <div>
-                  <strong>{book.title}</strong> — {book.author} | 💲{book.price}{" "}
-                  | 📦 {book.stock}
+              <li key={book._id}>
+                <div className="book-info">
+                  <strong>{book.title}</strong> — {book.author}
+                  <span>
+                    💲 {book.price} | 📦 {book.stock}
+                  </span>
                 </div>
-                <div style={{ display: "flex", gap: "0.5rem" }}>
+                <div className="book-buttons">
                   <button
+                    className="edit-button"
                     onClick={() => handleEditClick(book)}
-                    style={{
-                      backgroundColor: "#1976D2",
-                      color: "white",
-                      border: "none",
-                      borderRadius: "5px",
-                      padding: "0.3rem 0.8rem",
-                    }}
                   >
                     Editar
                   </button>
                   <button
+                    className="delete-button"
                     onClick={() => handleDeleteBook(book._id)}
-                    style={{
-                      backgroundColor: "red",
-                      color: "white",
-                      border: "none",
-                      borderRadius: "5px",
-                      padding: "0.3rem 0.8rem",
-                    }}
                   >
                     Eliminar
                   </button>
                   <button
+                    className="add-to-cart-button"
                     onClick={() => handleAddToCart(book._id)}
-                    style={{
-                      backgroundColor: "green",
-                      color: "white",
-                      border: "none",
-                      borderRadius: "5px",
-                      padding: "0.3rem 0.8rem",
-                    }}
                   >
                     🛒 Agregar al carrito
                   </button>

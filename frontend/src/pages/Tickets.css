@@ -9,12 +9,12 @@
   font-size: 2rem;
   margin-bottom: 1.5rem;
   text-align: center;
-  color: #333;
+  color: black;
 }
 
 .no-tickets {
   text-align: center;
-  color: #777;
+  color: black;
   font-style: italic;
 }
 

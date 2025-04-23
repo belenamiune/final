@@ -29,7 +29,7 @@ export default function Books() {
   };
 
   return (
-    <div style={{ maxWidth: "800px", margin: "2rem auto", padding: "1rem" }}>
+    <div className="container">
       <h2 style={{ textAlign: "center", marginBottom: "2rem" }}>
         📚 Listado de libros
       </h2>

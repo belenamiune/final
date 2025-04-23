@@ -1,0 +1,90 @@
+.books-container {
+  padding: 2rem;
+  max-width: 700px;
+  width: 100%;
+  margin: 2rem auto;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.books-container h3 {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.books-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.books-list li {
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.books-list li:hover {
+  background-color: #f4f4f4;
+}
+
+.book-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.book-info strong {
+  font-size: 18px;
+}
+
+.book-info span {
+  font-size: 14px;
+  color: #555;
+}
+
+.book-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.book-buttons button {
+  padding: 0.6rem 1.2rem;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.book-buttons button:hover {
+  transform: scale(1.05);
+}
+
+.book-buttons .edit-button {
+  background-color: #1976d2;
+  color: white;
+}
+
+.book-buttons .delete-button {
+  background-color: #d32f2f;
+  color: white;
+}
+
+.book-buttons .add-to-cart-button {
+  background-color: #388e3c;
+  color: white;
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+  font-size: 14px;
+  margin-top: 1rem;
+}

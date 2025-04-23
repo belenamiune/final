@@ -19,7 +19,7 @@ export default function Login() {
       localStorage.setItem("cartId", res.data.user.cartId);
       localStorage.setItem("userId", res.data.user._id);
       login(res.data.user);
-      navigate("/");
+      navigate("/books");
     } catch (err) {
       setError(err.response?.data?.message || "Error al iniciar sesión");
     }

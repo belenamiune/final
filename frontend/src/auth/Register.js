@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import api from "../services/api";
+import { useNavigate } from "react-router-dom";
 import "./Register.css";
 
 export default function Register() {
@@ -11,7 +12,8 @@ export default function Register() {
   });
 
   const [error, setError] = useState("");
-
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -19,6 +21,7 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+    setLoading(true);
     try {
       const res = await api.post("/users/register", form);
       alert("¡Usuario registrado con éxito!");
@@ -27,59 +30,55 @@ export default function Register() {
       localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("cartId", res.data.cartId);
       localStorage.setItem("userId", res.data.id);
-      window.location.href = "/login";
+      navigate("/login");
     } catch (err) {
       setError(err.response?.data?.message || "Error al registrar usuario");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="register-container">
-      <h2>Registro</h2>
+      <h1>Registro</h1>
       <form onSubmit={handleSubmit} className="register-form">
-        <label>
-          Nombre:
-          <input
-            name="name"
-            placeholder="Tu nombre"
-            onChange={handleChange}
-            required
-          />
-        </label>
-
-        <label>
-          Email:
-          <input
-            name="email"
-            type="email"
-            placeholder="tu@email.com"
-            onChange={handleChange}
-            required
-          />
-        </label>
-
-        <label>
-          Contraseña:
-          <input
-            name="password"
-            type="password"
-            placeholder="Contraseña"
-            onChange={handleChange}
-            required
-          />
-        </label>
-
-        <label>
-          Rol (user o admin):
-          <input
-            name="role"
-            placeholder="user o admin"
-            onChange={handleChange}
-            required
-          />
-        </label>
-
-        <button type="submit">Registrarse</button>
+        <input
+          name="name"
+          placeholder="Nombre"
+          value={form.name}
+          onChange={handleChange}
+          required
+          className="input"
+        />
+        <input
+          name="email"
+          type="email"
+          placeholder="Correo electrónico"
+          value={form.email}
+          onChange={handleChange}
+          required
+          className="input"
+        />
+        <input
+          name="password"
+          type="password"
+          placeholder="Contraseña"
+          value={form.password}
+          onChange={handleChange}
+          required
+          className="input"
+        />
+        <input
+          name="role"
+          placeholder="Role: user o admin"
+          value={form.role}
+          onChange={handleChange}
+          required
+          className="input"
+        />
+        <button type="submit" className="button" disabled={loading}>
+          {loading ? "Registrando..." : "Registrarse"}
+        </button>
       </form>
 
       {error && <p className="error-message">{error}</p>}
