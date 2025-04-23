@@ -36,6 +36,9 @@ export const getCartByUser = async (req, res, next) => {
         .json({ status: "error", message: "Carrito no encontrado" });
     }
 
+    cart.products = cart.products.filter((p) => p.book);
+    await cart.save();
+
     res.json({ status: "success", cart });
   } catch (error) {
     next(error);
@@ -121,21 +124,29 @@ export const purchaseCart = async (req, res, next) => {
         .json({ status: "error", message: "Carrito vacío o no encontrado" });
     }
 
+    const validProducts = cart.products.filter((p) => p.book);
+
+    if (validProducts.length === 0) {
+      return res.status(400).json({
+        status: "error",
+        message: "No hay productos válidos para comprar.",
+      });
+    }
+
     let totalAmount = 0;
 
-    for (const item of cart.products) {
+    for (const item of validProducts) {
       const book = item.book;
       const quantity = item.quantity;
 
       if (
-        !book ||
         typeof book.price !== "number" ||
         isNaN(book.price) ||
         book.price <= 0
       ) {
         return res.status(400).json({
           status: "error",
-          message: `Precio inválido para el libro con ID ${book?._id}`,
+          message: `Precio inválido para el libro con ID ${book._id}`,
         });
       }
 
@@ -156,7 +167,7 @@ export const purchaseCart = async (req, res, next) => {
       totalAmount += book.price * quantity;
     }
 
-    for (const item of cart.products) {
+    for (const item of validProducts) {
       const book = item.book;
       book.stock -= item.quantity;
       await book.save();
@@ -168,7 +179,7 @@ export const purchaseCart = async (req, res, next) => {
       amount: totalAmount,
       purchaser: req.user.email,
       userId: req.user.id,
-      products: cart.products.map((item) => ({
+      products: validProducts.map((item) => ({
         productId: item.book._id,
         quantity: item.quantity,
       })),
@@ -176,7 +187,7 @@ export const purchaseCart = async (req, res, next) => {
 
     await ticket.save();
 
-    cart.products = [];
+    cart.products = cart.products.filter((p) => !p.book);
     await cart.save();
 
     res.status(201).json({

@@ -10,6 +10,7 @@ export default function AdminPanel() {
   });
   const [message, setMessage] = useState("");
   const [books, setBooks] = useState([]);
+  const [editingBook, setEditingBook] = useState(null);
 
   useEffect(() => {
     fetchBooks();
@@ -47,13 +48,20 @@ export default function AdminPanel() {
     }
   };
 
-  const handleUpdateBook = async (book) => {
-    const newTitle = prompt("Nuevo título:", book.title);
-    if (!newTitle || newTitle.trim() === "") return;
+  const handleEditClick = (book) => {
+    setEditingBook(book);
+  };
 
+  const handleEditChange = (e) => {
+    setEditingBook({ ...editingBook, [e.target.name]: e.target.value });
+  };
+
+  const handleUpdateSubmit = async (e) => {
+    e.preventDefault();
     try {
-      await api.put(`/book/${book._id}`, { ...book, title: newTitle });
+      await api.put(`/book/${editingBook._id}`, editingBook);
       setMessage("✏️ Libro actualizado");
+      setEditingBook(null);
       fetchBooks();
     } catch (err) {
       setMessage("❌ Error al actualizar libro");
@@ -63,7 +71,7 @@ export default function AdminPanel() {
   const handleAddToCart = async (bookId) => {
     const cartId = localStorage.getItem("cartId");
     try {
-      await api.post("/carts/add", { bookId, cartId });
+      await api.post("/carts/add", { bookId, cartId, quantity: 1 });
       setMessage("✅ Producto agregado al carrito");
     } catch (err) {
       setMessage("❌ Error al agregar al carrito");
@@ -136,6 +144,79 @@ export default function AdminPanel() {
         </button>
       </form>
 
+      {editingBook && (
+        <form
+          onSubmit={handleUpdateSubmit}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "1rem",
+            marginBottom: "2rem",
+            border: "1px solid #ddd",
+            padding: "1rem",
+            borderRadius: "8px",
+          }}
+        >
+          <h3>Editar libro</h3>
+          <input
+            name="title"
+            placeholder="Título"
+            value={editingBook.title}
+            onChange={handleEditChange}
+            required
+          />
+          <input
+            name="author"
+            placeholder="Autor"
+            value={editingBook.author}
+            onChange={handleEditChange}
+            required
+          />
+          <input
+            name="price"
+            type="number"
+            placeholder="Precio"
+            value={editingBook.price}
+            onChange={handleEditChange}
+            required
+          />
+          <input
+            name="stock"
+            type="number"
+            placeholder="Stock"
+            value={editingBook.stock}
+            onChange={handleEditChange}
+            required
+          />
+          <div style={{ display: "flex", gap: "1rem" }}>
+            <button
+              type="submit"
+              style={{
+                padding: "0.5rem",
+                backgroundColor: "#1976D2",
+                color: "white",
+                border: "none",
+                borderRadius: "5px",
+              }}
+            >
+              Guardar cambios
+            </button>
+            <button
+              type="button"
+              onClick={() => setEditingBook(null)}
+              style={{
+                padding: "0.5rem",
+                backgroundColor: "#ccc",
+                border: "none",
+                borderRadius: "5px",
+              }}
+            >
+              Cancelar
+            </button>
+          </div>
+        </form>
+      )}
+
       <div>
         <h3>Lista de libros</h3>
         {books.length === 0 ? (
@@ -160,7 +241,7 @@ export default function AdminPanel() {
                 </div>
                 <div style={{ display: "flex", gap: "0.5rem" }}>
                   <button
-                    onClick={() => handleUpdateBook(book)}
+                    onClick={() => handleEditClick(book)}
                     style={{
                       backgroundColor: "#1976D2",
                       color: "white",

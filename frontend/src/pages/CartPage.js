@@ -78,25 +78,29 @@ export default function CartPage() {
       ) : (
         <>
           <ul style={{ listStyle: "none", padding: 0 }}>
-            {cart.products.map(({ book, quantity }) => (
-              <li
-                key={book._id}
-                style={{
-                  marginBottom: "1rem",
-                  borderBottom: "1px solid #ddd",
-                  paddingBottom: "1rem",
-                }}
-              >
-                <strong>{book.title}</strong> — {book.author} | 💲{book.price} ×{" "}
-                {quantity}
-                <button
-                  onClick={() => handleRemoveBookFromCart(book._id)}
-                  style={{ marginLeft: "1rem", color: "white" }}
+            {cart.products.map(({ book, quantity }, index) => {
+              if (!book) return null;
+
+              return (
+                <li
+                  key={book._id || index}
+                  style={{
+                    marginBottom: "1rem",
+                    borderBottom: "1px solid #ddd",
+                    paddingBottom: "1rem",
+                  }}
                 >
-                  Eliminar
-                </button>
-              </li>
-            ))}
+                  <strong>{book.title}</strong> — {book.author} | 💲{book.price}{" "}
+                  × {quantity}
+                  <button
+                    onClick={() => handleRemoveBookFromCart(book._id)}
+                    style={{ marginLeft: "1rem", color: "white" }}
+                  >
+                    Eliminar
+                  </button>
+                </li>
+              );
+            })}
           </ul>
           <button onClick={handlePurchase} style={{ marginTop: "1rem" }}>
             Finalizar compra

@@ -13,11 +13,11 @@ export default function Navbar() {
 
   return (
     <nav className="navbar">
-      {user && <Link to="/">Books</Link>}
+      {user && <Link to="/books">Books</Link>}
       {user?.role === "admin" && <Link to="/admin">Admin</Link>}
 
-      {user && <Link to="/tickets">Mis Tickets</Link>}
       {user && <Link to="/cart">Carrito</Link>}
+      {user && <Link to="/tickets">Mis Tickets</Link>}
 
       {user ? (
         <button onClick={handleLogout}>Salir</button>

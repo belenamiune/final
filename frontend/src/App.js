@@ -14,24 +14,24 @@ function App() {
     <AuthProvider>
       <Router>
         <Navbar />
-        <div className="container">
+        <div>
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
 
             <Route
-              path="/cart"
-              element={
-                <PrivateRoute>
-                  <CartPage />
-                </PrivateRoute>
-              }
-            />
-            <Route
               path="/tickets"
               element={
                 <PrivateRoute>
                   <Tickets />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/cart"
+              element={
+                <PrivateRoute>
+                  <CartPage />
                 </PrivateRoute>
               }
             />
@@ -44,7 +44,7 @@ function App() {
               }
             />
 
-            <Route path="/" element={<Books />} />
+            <Route path="/books" element={<Books />} />
           </Routes>
         </div>
       </Router>

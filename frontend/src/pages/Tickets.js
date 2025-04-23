@@ -53,12 +53,18 @@ const TicketsPage = () => {
 
               <h4 className="products-title">Productos Comprados:</h4>
               <ul className="product-list">
-                {ticket.products.map((item, index) => (
-                  <li key={index} className="product-item">
-                    <strong>{item.productId.title}</strong> — {item.quantity}{" "}
-                    unidades
-                  </li>
-                ))}
+                {ticket.products.map((item, index) =>
+                  item.productId ? (
+                    <li key={index} className="product-item">
+                      <strong>{item.productId.title}</strong> — {item.quantity}{" "}
+                      unidades
+                    </li>
+                  ) : (
+                    <li key={index} className="product-item">
+                      <em>Producto eliminado</em> — {item.quantity} unidades
+                    </li>
+                  )
+                )}
               </ul>
             </div>
           ))}
